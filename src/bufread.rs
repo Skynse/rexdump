@@ -79,15 +79,3 @@ impl HexDump {
         Ok(())
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::{any::Any, fmt::Result, io::Bytes};
-
-    #[test]
-    fn test_byte_struct() {
-        let test_struct = HexDump::new();
-        assert_eq!(1, 1);
-    }
-}
