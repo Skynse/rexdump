@@ -10,4 +10,15 @@
 
 # Usage
 
-    rexdump <filename>
+    Rexdump 0.1.1
+    minimalist hexdump implementation
+
+    USAGE:
+        rexdump [OPTIONS]
+
+    FLAGS:
+        -h, --help       Prints help information
+        -V, --version    Prints version information
+
+    OPTIONS:
+        -i <FILE>        Input file
