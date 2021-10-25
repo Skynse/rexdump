@@ -3,17 +3,19 @@ use std::io::prelude::*;
 
 pub struct HexDump;
 
-fn sanitize(hex: &str) -> String {
-    let mut temp = String::from("0");
+fn sanitize(hex: String) -> String {
     if hex.trim().len() == 1 {
-        temp.push_str(hex);
-        return temp;
+        "0".to_owned() + &hex
     } else {
-        return hex.to_string();
+        hex
     }
 }
 
 fn sanitize_chars(c: String) -> String {
+    // This function sanitizes the ascii display on the far right
+    // Only ascii values within the range 32-128 are displayed
+    // Otherwise a '.' is substituted
+
     let mut temp: String = String::new();
     let count = 0;
     for chr in c.chars().into_iter() {
@@ -38,6 +40,7 @@ impl HexDump {
     pub fn read(&mut self, path: &str) -> Result<(), std::io::Error> {
         let mut output: String = String::new();
         let mut file = File::open(path)?;
+
         let mut offset: u32 = 0;
 
         loop {
@@ -57,12 +60,14 @@ impl HexDump {
                     if count == 8 {
                         output.push_str("| ")
                     }
-                    output.push_str(sanitize(format!("{:X?} ", byte).as_str()).as_str());
+                    output.push_str(sanitize(format!("{:X?} ", byte)).as_str());
 
                     count += 1;
                 }
 
                 if temp_chunks.len() % 16 != 0 {
+                    // Offset whitespace at the end of a chunk that
+                    // does not have a length of 16.
                     output.push_str("   ".repeat(16 - temp_chunks.len()).as_str());
                     output.push_str(chars.as_str());
                 } else {
@@ -71,7 +76,7 @@ impl HexDump {
 
                 println!("{}", output);
             }
-            offset += 16;
+            offset += 16; //increment address by 16 bits.
             output.clear();
             chars.clear();
         }
