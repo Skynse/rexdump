@@ -1,10 +1,23 @@
 mod bufread;
+use clap::{App, Arg};
 use std::env;
 
-fn main() {
+const VERSION: &'static str = env!("CARGO_PKG_VERSION");
+fn main(){
     //test function to print the output of the binary file
-    let mut data = bufread::HexDump::new();
-    if env::args().len() == 2 {
-        data.read(env::args().nth(1).unwrap().as_str());
+    let App = App::new("Rexdump")
+        .version(VERSION)
+        .about("minimalist hexdump implementation")
+        .arg(
+            Arg::with_name("input")
+                .help("Input file")
+                .value_name("FILE")
+                .short("i"),
+        )
+        .get_matches();
+    
+    if App.is_present("input") {
+        let mut data = bufread::HexDump::new(); // Might implement some struct members later
+        data.read(App.value_of("input").unwrap());
     }
 }
