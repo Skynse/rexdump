@@ -76,7 +76,7 @@ impl HexDump {
 
                 println!("{}", output);
             }
-            offset += 16; //increment address by 16 bits.
+            offset += 16; //increment address by 1 bit
             output.clear();
             chars.clear();
         }
